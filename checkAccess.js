@@ -5,10 +5,14 @@ function check(e){
     if (e.camera) { camera(); } 
 }
 
+function network(e){
+    var _hasNetworkConnection = Titanium.Network.online;
+    return _hasNetworkConnection;
+}
 
 function camera(e){
     //check camera permission
-    var hasCameraPermissions = Ti.Media.hasCameraPermissions();
+    var _hasCameraPermissions = Ti.Media.hasCameraPermissions();
 
     if (OS_IOS) {
         var cameraAuthorizationStatus = Ti.Media.cameraAuthorizationStatus;
@@ -22,7 +26,7 @@ function camera(e){
 
     //if we dont have to request permission
     if(!requestPermission){
-        return hasCameraPermissions;
+        return _hasCameraPermissions;
     }
 
     //Before you request permission on android make sure you have this set on tiapp.xml

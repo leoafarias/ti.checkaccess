@@ -14,6 +14,12 @@ Ability to check the following permissions on OS
 - Storage
 
 ### Network
+Titanium.Network.online:Boolean
+Boolean value indicating if the device can reach the Internet.
+
+Implement Ti.Network.networkType to give visibility of what is the connection type.
+
+The online property is true if the device can currently reach the Internet using either WiFi, mobile network or LAN.
 
 ### Notification
 Ti.Network.remoteNotificatoinsEnabled:Boolean
