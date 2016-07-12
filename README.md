@@ -3,9 +3,9 @@ Small utility to check iOS and Android API permissions, and access.
 
 ## Specs
 Ability to check the following permissions on OS
-- Network
+- X Network
 - Notification
-- Camera
+- X Camera
 - Microphone
 - Photo Gallery
 - Location
@@ -14,12 +14,7 @@ Ability to check the following permissions on OS
 - Storage
 
 ### Network
-Titanium.Network.online:Boolean
-Boolean value indicating if the device can reach the Internet.
-
-Implement Ti.Network.networkType to give visibility of what is the connection type.
-
-The online property is true if the device can currently reach the Internet using either WiFi, mobile network or LAN.
+Add implementation example
 
 ### Notification
 Ti.Network.remoteNotificatoinsEnabled:Boolean
@@ -27,9 +22,7 @@ Indicates whether push notifications have been enabled using registerForPushNoti
 only iOS support
 
 ### Camera
-Ti.Media.hasCameraPermissions():Boolean
-Returns *true* if the app has camera access
-Android and iOS support
+Add implementation example
 
 ### Microphone
 
