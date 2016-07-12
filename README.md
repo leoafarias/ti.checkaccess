@@ -25,6 +25,9 @@ only iOS support
 Add implementation example
 
 ### Microphone
+Ti.Media.requestAuthorization(*callback*)
+Request the user's permission for audio recording
+iOS only
 
 ### Location Application
 Ti.Geolocation.hasLocationPermissions(*authorizationType*):Boolean
