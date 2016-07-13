@@ -3,7 +3,7 @@ var editPermission;
 
 function check(e){
     requestPermission = e.requestPermission;
-    // TO DO - created check method for all the permissions
+    // TODO:  - created check method for all the permissions
 }
 
 function network(e){
@@ -158,6 +158,51 @@ function contacts(e) {
 
     _hasContactsPermissions = Ti.Contacts.hasContactsPermissions();
     return result(_hasContactsPermissions, _detail);
+
+}
+
+function geolocation(e) {
+    var _hasLocationPermissions = Ti.Geolocation.hasLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS);
+
+    if (_hasLocationPermissions) {
+		 _detail = 'You already have permission';
+        console.log(_detail);
+        return result(_hasLocationPermissions, _detail);
+	}
+
+    if (OS_IOS) {
+
+		// Available since Ti 0.8 for iOS and Ti 4.1 for Windows
+		// Always returns AUTHORIZATION_UNKNOWN on iOS<4.2
+		var _locationServicesAuthorization = Ti.Geolocation.locationServicesAuthorization;
+
+
+		if (_locationServicesAuthorization === Ti.Geolocation.AUTHORIZATION_RESTRICTED) {
+			_detail = 'Permission are restricted by some policy. Requesting again might cause issues.';
+            console.warn('ti.checkAccess => ' + _detail);
+		} else if (_locationServicesAuthorization === Ti.Geolocation.AUTHORIZATION_DENIED) {
+            _detail = 'Permission has been denied before.';
+            console.warn('ti.checkAccess =>  ' + _detail);
+		}
+	}
+
+    Ti.Geolocation.requestLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS, function(e) {
+	
+        if (e.success) {
+
+            _detail = 'You granted location permission.';
+
+        } else if (OS_ANDROID) {
+            _detail = 'You don\'t have the required uses-permissions in tiapp.xml or you denied location permission for now, forever or the dialog did not show at all because you denied forever before.';
+
+        } else {
+            _detail = 'You denied location permission.';
+        }
+	
+	});
+
+    _hasLocationPermissions = Ti.Geolocation.hasLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS);
+    return result(_hasLocationPermissions, _detail);
 
 }
 
