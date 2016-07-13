@@ -114,6 +114,53 @@ function calendar(e) {
     _hasCalendarPermissions = Ti.Calendar.hasCalendarPermissions();
     return result(_hasCalendarPermissions, _detail);
 }
+
+function contacts(e) {
+    var _hasContactsPermissions = Ti.Contacts.hasContactsPermissions();
+    var _detail;
+
+    if (_hasContactsPermissions) {
+        _detail = 'You already have permission';
+        console.log(_detail);
+        return result(_hasContactsPermissions, _detail);
+    }
+
+    if (OS_IOS) {
+	
+        var _contactsAuthorization = Ti.Contacts.contactsAuthorization;
+
+        if (_contactsAuthorization === Ti.Contacts.AUTHORIZATION_RESTRICTED) {
+            _detail = 'Permission are restricted by some policy. Requesting again might cause issues.';
+            console.warn('ti.checkAccess => ' + _detail);
+
+        } else if (_contactsAuthorization === Ti.Contacts.AUTHORIZATION_DENIED) {
+            _detail = 'Permission has been denied before.';
+            console.warn('ti.checkAccess =>  ' + _detail);
+        }
+    }
+
+    if(requestPermission){
+        Ti.Contacts.requestContactsPermissions(function(e) {
+
+            if (e.success) {
+
+                _detail = 'You granted permission.';
+
+            } else if (OS_ANDROID) {
+                _detail = 'You don\'t have the required uses-permissions in tiapp.xml or you denied permission for now, forever or the dialog did not show at all because you denied forever before.';
+
+            } else { -
+                _detail = 'You denied permission.';
+            }
+
+        });
+    }
+
+    _hasContactsPermissions = Ti.Contacts.hasContactsPermissions();
+    return result(_hasContactsPermissions, _detail);
+
+}
+
 function result(value, detail){
     if (editPermission) goToSettings();
 
