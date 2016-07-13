@@ -9,12 +9,11 @@ Ability to check the following permissions on OS
 - Microphone
 - Photo Gallery
 - Location
-- Contacts
-- Calendar
+- X Contacts
+- X Calendar
 - Storage
 
 ### Network
-Add implementation example
 
 ### Notification
 Ti.Network.remoteNotificatoinsEnabled:Boolean
@@ -22,7 +21,6 @@ Indicates whether push notifications have been enabled using registerForPushNoti
 only iOS support
 
 ### Camera
-Add implementation example
 
 ### Microphone
 Ti.Media.requestAuthorization(*callback*)
@@ -43,14 +41,10 @@ This method returns true if any location provider is enabled.
 On Android OS 2.2 and above, there is a new, "passive" location provider that is enabled at all times, even when the user disables both the GPS and Network location providers. Therefore, this method always returns true on these devices
 
 ### Contacts
-Ti.Contacts.hasContactsPermissions():Boolean
-Returns *true* if the app has contact access
-Android and iOS support
+
 
 ### Calendar
-Ti.Calendar.hasCalendarPermissions():Boolean
-Returns *true* if the app has calendar access
-Android and iOS support
+
 
 ### Storage
 Ti.Filesystem.hasStoragePermissions():Boolean
