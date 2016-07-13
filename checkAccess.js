@@ -105,7 +105,7 @@ function calendar(e) {
             } else if (OS_ANDROID) {
                 _detail = 'You don\'t have the required uses-permissions in tiapp.xml or you denied permission for now, forever or the dialog did not show at all because you denied forever before.';
 
-            } else { -
+            } else {
                 _detail = 'You denied permission.';
             }
         });
@@ -149,7 +149,7 @@ function contacts(e) {
             } else if (OS_ANDROID) {
                 _detail = 'You don\'t have the required uses-permissions in tiapp.xml or you denied permission for now, forever or the dialog did not show at all because you denied forever before.';
 
-            } else { -
+            } else {
                 _detail = 'You denied permission.';
             }
 
@@ -167,7 +167,7 @@ function result(value, detail){
     return {
         "permission": value,
         "detail": detail
-    }
+    };
 }
 
 function goToSettings(e){
