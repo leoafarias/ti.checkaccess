@@ -12,13 +12,13 @@ function network(e){
     var _detail;
 
     if (_networkType === Ti.Network.NETWORK_MOBILE) {
-        _detail = "Device is communicating over a mobile network";
+        _detail = 'Device is communicating over a mobile network';
         console.log('ti.checkAccess => ' + _detail);
     } else if( _networkType === Ti.Network.NETWORK_WIFI ){
-        _detail = "Device is communicating over a mobile network";
+        _detail = 'Device is communicating over a mobile network';
         console.log('ti.checkAccess => ' + _detail);
     } else if( _networkType === Ti.Network.NETWORK_NONE ){
-        _detail = "No network is available";
+        _detail = 'No network is available';
         console.log('ti.checkAccess => ' + _detail);
     }
 
@@ -26,17 +26,23 @@ function network(e){
 }
 
 function camera(e){
-
+    var _hasCameraPermissions = Ti.Media.hasCameraPermissions();
     var _detail;
+
+    if (_hasCameraPermissions) {
+        _detail = 'You already have permission';
+        console.log(_detail);
+        return result(_hasCameraPermissions, _detail);
+    }
 
     if (OS_IOS) {
         var cameraAuthorizationStatus = Ti.Media.cameraAuthorizationStatus;
 
         if (cameraAuthorizationStatus === Ti.Media.CAMERA_AUTHORIZATION_RESTRICTED) {
-			_detail = "Because permission are restricted by some policy which you as user cannot change, we don\'t request as that might also cause issues.";
+			_detail = 'Permission are restricted by some policy. Requesting again might cause issues.';
             console.warn('ti.checkAccess => ' + _detail);
 		} else if (cameraAuthorizationStatus === Ti.Media.CAMERA_AUTHORIZATION_DENIED) {
-            _detail = "Permission has been denied before.";
+            _detail = 'Permission has been denied before.';
             console.warn('ti.checkAccess =>  ' + _detail);
         }
     }
@@ -52,16 +58,16 @@ function camera(e){
 
         Ti.Media.requestCameraPermissions(function(e){
             if(e.success){
-                _detail = "You granted permission";
+                _detail = 'You granted permission';
                 console.log('ti.checkAccess => ' + _detail);
             }  else {
-                _detail = "You denied permission";
+                _detail = 'You denied permission';
                 console.warn('ti.checkAccess => ' + _detail);
             }
         });
     }
 
-    var _hasCameraPermissions = Ti.Media.hasCameraPermissions();
+     _hasCameraPermissions = Ti.Media.hasCameraPermissions();
     return result(_hasCameraPermissions, _detail);
 }
 
