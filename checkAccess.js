@@ -65,6 +65,49 @@ function camera(e){
     return result(_hasCameraPermissions, _detail);
 }
 
+function calendar(e) {
+    var _hasCalendarPermissions = Ti.Calendar.hasCalendarPermissions();
+    var _detail;
+
+    if (_hasCalendarPermissions) {
+        _detail = 'You already have permission';
+        console.log(_detail);
+        return result(_hasCalendarPermissions, _detail);
+    }
+
+    if (OS_IOS) {
+	
+		var eventsAuthorization = Ti.Calendar.eventsAuthorization;
+
+		if (eventsAuthorization === Ti.Calendar.AUTHORIZATION_RESTRICTED) {
+           _detail = 'Permission are restricted by some policy. Requesting again might cause issues.';
+            console.warn('ti.checkAccess => ' + _detail);
+
+		} else if (eventsAuthorization === Ti.Calendar.AUTHORIZATION_DENIED) {
+            _detail = 'Permission has been denied before.';
+            console.warn('ti.checkAccess =>  ' + _detail);
+		}
+	}
+
+    if(requestPermission){
+        Ti.Calendar.requestCalendarPermissions(function(e) {
+
+            if (e.success) {
+
+                _detail = 'You granted permission.';
+
+            } else if (OS_ANDROID) {
+                _detail = 'You don\'t have the required uses-permissions in tiapp.xml or you denied permission for now, forever or the dialog did not show at all because you denied forever before.';
+
+            } else { -
+                _detail = 'You denied permission.';
+            }
+        });
+    }
+
+    _hasCalendarPermissions = Ti.Calendar.hasCalendarPermissions();
+    return result(_hasCalendarPermissions, _detail);
+}
 function result(value, detail){
     if (editPermission) goToSettings();
 
