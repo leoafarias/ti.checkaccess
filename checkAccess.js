@@ -222,7 +222,7 @@ function goToSettings(e){
 
 	if (OS_ANDROID) {
 		var intent = Ti.Android.createIntent({
-			action: 'android.settings.APPLICATION_SETTINGS',
+			action: 'android.settings.APPLICATION_SETTINGS'
 		});
 		intent.addFlags(Ti.Android.FLAG_ACTIVITY_NEW_TASK);
 		Ti.Android.currentActivity.startActivity(intent);
