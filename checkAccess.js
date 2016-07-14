@@ -161,6 +161,33 @@ function contacts(e) {
 
 }
 
+function storage(e){
+
+    if (!OS_ANDROID) {
+        console.error('ti.checkAccess => This is storage method is only available on Android');
+    }
+    
+    var _hasStoragePermission = Ti.Filesystem.hasStoragePermissions();
+    if (_hasStoragePermission) {
+		 _detail = 'You already have permission';
+        console.log(_detail);
+        return result(_hasStoragePermission, _detail);
+	}
+
+    if(requestPermission){
+        Ti.Filesystem.requestStoragePermissions(function(e){
+             if (e.success) {
+                _detail = 'You granted location permission.';
+            } else {
+                _detail = 'You denied location permission.';
+            }
+        });
+    }
+
+    _hasStoragePermission = Ti.Filesystem.hasStoragePermissions();
+    return result(_hasStoragePermission, _detail);
+}
+
 function geolocation(e) {
     var _hasLocationPermissions = Ti.Geolocation.hasLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS);
 
