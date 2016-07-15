@@ -49,7 +49,4 @@ On Android OS 2.2 and above, there is a new, "passive" location provider that is
 
 
 ### Storage
-Ti.Filesystem.hasStoragePermissions():Boolean
-Returns *true* if the app has storage permissions
-Android and iOS support
 
