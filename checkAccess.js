@@ -1,13 +1,38 @@
-var requestPermission;
-var editPermission;
 
-function check(e){
-    requestPermission = e.requestPermission;
+/**
+ * Init permission check
+ *
+ * @param {array} type - Array with all the permissions would like to check.
+ * @param {boolean} requestPermission - Flag to trigger the requestPermission for the permission type
+ * @param {boolean} editPermission - Flag to trigger editPermission functionality
+ * @return {object} - With all the permissions
+*/
+
+function Check(options){
+    if(!options){
+        options = {};
+        // TODO: Remove this options check later
+    }
+    _.defaults(options, {
+        type: false,
+        requestPermission: false,
+        editPermission: false
+    });
+
+    if(!_.isArray(options.type)){
+        console.error('Type passed during Check() is invalid');
+        return;
+    }
+
+    this.type = options.type;
+    this.requestPermission = options.requestPermission;
+    this.editPermission = options.editPermission;
+
     // TODO:  - created check method for all the permissions
-}
+};
 
-function network(e){
-    var _hasNetworkConnection = Titanium.Network.online;
+Check.prototype.network = function(){
+    var _hasNetworkConnection = Ti.Network.online;
     var _networkType = Ti.Network.networkType;
     var _detail;
 
@@ -15,7 +40,7 @@ function network(e){
         _detail = 'Device is communicating over a mobile network';
         console.log('ti.checkAccess => ' + _detail);
     } else if( _networkType === Ti.Network.NETWORK_WIFI ){
-        _detail = 'Device is communicating over a mobile network';
+        _detail = 'Device is communicating over a wifi network';
         console.log('ti.checkAccess => ' + _detail);
     } else if( _networkType === Ti.Network.NETWORK_NONE ){
         _detail = 'No network is available';
@@ -23,9 +48,9 @@ function network(e){
     }
 
     return result(_hasNetworkConnection, _detail);
-}
+};
 
-function camera(e){
+Check.prototype.camera = function(){
     var _hasCameraPermissions = Ti.Media.hasCameraPermissions();
     var _detail;
 
@@ -71,7 +96,7 @@ function camera(e){
     return result(_hasCameraPermissions, _detail);
 }
 
-function calendar(e) {
+Check.prototype.calendar = function(){
     var _hasCalendarPermissions = Ti.Calendar.hasCalendarPermissions();
     var _detail;
 
@@ -115,7 +140,7 @@ function calendar(e) {
     return result(_hasCalendarPermissions, _detail);
 }
 
-function contacts(e) {
+Check.prototype.contacts = function(){
     var _hasContactsPermissions = Ti.Contacts.hasContactsPermissions();
     var _detail;
 
@@ -161,7 +186,7 @@ function contacts(e) {
 
 }
 
-function storage(e){
+Check.prototype.storage = function(){
 
     if (!OS_ANDROID) {
         console.error('ti.checkAccess => This is storage method is only available on Android');
@@ -188,7 +213,7 @@ function storage(e){
     return result(_hasStoragePermission, _detail);
 }
 
-function geolocation(e) {
+Check.prototype.geolocation = function(){
     var _hasLocationPermissions = Ti.Geolocation.hasLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS);
 
     if (_hasLocationPermissions) {
@@ -199,8 +224,6 @@ function geolocation(e) {
 
     if (OS_IOS) {
 
-		// Available since Ti 0.8 for iOS and Ti 4.1 for Windows
-		// Always returns AUTHORIZATION_UNKNOWN on iOS<4.2
 		var _locationServicesAuthorization = Ti.Geolocation.locationServicesAuthorization;
 
 
@@ -234,7 +257,10 @@ function geolocation(e) {
 }
 
 function result(value, detail){
-    if (editPermission) goToSettings();
+    //if (editPermission) goToSettings();
+
+    alert('ti.checkaccess => ' + value + '\n ' + detail);
+    console.log('ti.checkaccess => ' + value + '\n ' + detail);
 
     return {
         "permission": value,
@@ -256,4 +282,4 @@ function goToSettings(e){
 	}
 }
 
-exports.check = check;
+exports.check = new Check();
