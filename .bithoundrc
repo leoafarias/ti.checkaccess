@@ -2,11 +2,8 @@
 // https://gist.githubusercontent.com/bithoundio/709fce2067d89fed7744/raw/c63ca32a81eb267340dea07fa3734c403b3d660d/.bithoundrc
 
 {
-  "critics": {
-    "wc": { "limit": 5000 }
-  },
   "ignore": [
-    "example_app/**",
+    "**/example_app/**",
     "**/deps/**",
     "**/node_modules/**",
     "**/thirdparty/**",
