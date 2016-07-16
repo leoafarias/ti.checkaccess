@@ -24,6 +24,13 @@ function geolocation(){
 	check.geolocation();
 }
 
+/**
+ * Event Handler
+ */
+
+function onRequestPermissionSwitch(e){
+	check.requestPermission = e.value;
+	console.log(e.value);
+}
 
 $.index.open();
-q

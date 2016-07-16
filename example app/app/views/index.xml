@@ -1,30 +1,19 @@
 <Alloy>
 	<Window class="container">
-		<View layout="vertical" height="300">
-			<View class="buttonContainer">
-				<Button id="network" onClick="network">Network</Button>
-				<Switch id="networkSwitch" value="false" onChange="outputState"/>
+		<View layout="vertical" top="100">
+			
+			<Button id="network" onClick="network">Network</Button>
+			<Button id="camera" onClick="camera">Camera</Button>
+			<Button id="calendar" onClick="calendar">Calendar</Button>
+			<Button id="contacts" onClick="contacts">Contacts</Button>
+			<Button id="storage" onClick="storage">Storage</Button>
+			<Button id="geolocation" onClick="geolocation">Geolocation</Button>
+
+			<View class="switchContainer" layout="horizontal">
+				<Label class="switchLabel" text="Request Permission"/>
+				<Switch class="switch" id="requestPermission" value="false" onChange="onRequestPermissionSwitch"/>
 			</View>
-			<View class="buttonContainer">
-				<Button id="camera" onClick="camera">Camera</Button>
-				<Switch id="cameraSwitch" value="false" onChange="outputState"/>
-			</View>
-			<View class="buttonContainer">
-				<Button id="calendar" onClick="calendar">Calendar</Button>
-				<Switch id="calendarSwitch" value="false" onChange="outputState"/>
-			</View>
-			<View class="buttonContainer">
-				<Button id="contacts" onClick="contacts">Contacts</Button>
-				<Switch id="contactsSwitch" value="false" onChange="outputState"/>
-			</View>
-			<View class="buttonContainer">
-				<Button id="storage" onClick="storage">Storage</Button>
-				<Switch id="storageSwitch" value="false" onChange="outputState"/>
-			</View>
-			<View class="buttonContainer">
-				<Button id="geolocation" onClick="geolocation">Geolocation</Button>
-				<Switch id="geolocationSwitch" value="false" onChange="outputState"/>
-			</View>
+			
 		</View>
 	</Window>
 </Alloy>

@@ -2,6 +2,25 @@
 	backgroundColor:"white"
 }
 
-".buttonContainer":{
-	layout: "horizontal"
+"Button":{
+	width: "300",
+	height: 50,
+	backgroundColor: "#111",
+	bottom: 10,
+	color: "#fff"
+}
+
+".switchContainer":{
+	width: "300",
+	height: 50,
+	top:20,
+	bottom: 10,
+}
+
+".switchLabel":{
+	left: 10
+}
+
+".switch":{
+	left: 40
 }

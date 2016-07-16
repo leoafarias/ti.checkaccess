@@ -9,29 +9,21 @@
 */
 
 function Check(options){
-    if(!options){
-        options = {};
-        // TODO: Remove this options check later
-    }
+
     _.defaults(options, {
         type: false,
         requestPermission: false,
-        editPermission: false
+        editPermission: true
     });
 
-    if(!_.isArray(options.type)){
-        console.error('Type passed during Check() is invalid');
-        return;
-    }
+    setOptions(options);
+    
+}
 
-    this.type = options.type;
-    this.requestPermission = options.requestPermission;
-    this.editPermission = options.editPermission;
+Check.prototype.network = function(options){
 
-    // TODO:  - created check method for all the permissions
-};
+    setOptions(options);
 
-Check.prototype.network = function(){
     var _hasNetworkConnection = Ti.Network.online;
     var _networkType = Ti.Network.networkType;
     var _detail;
@@ -50,7 +42,10 @@ Check.prototype.network = function(){
     return result(_hasNetworkConnection, _detail);
 };
 
-Check.prototype.camera = function(){
+Check.prototype.camera = function(options){
+
+    setOptions(options);
+
     var _hasCameraPermissions = Ti.Media.hasCameraPermissions();
     var _detail;
 
@@ -73,7 +68,7 @@ Check.prototype.camera = function(){
     }
 
     //if we dont have to request permission
-    if(requestPermission){
+    if(this.requestPermission){
         //Before you request permission on android make sure you have this set on tiapp.xml
         // <android xmlns:android="http://schemas.android.com/apk/res/android">
         //     <manifest>
@@ -94,9 +89,12 @@ Check.prototype.camera = function(){
 
      _hasCameraPermissions = Ti.Media.hasCameraPermissions();
     return result(_hasCameraPermissions, _detail);
-}
+};
 
-Check.prototype.calendar = function(){
+Check.prototype.calendar = function(options){
+
+    setOptions(options);
+
     var _hasCalendarPermissions = Ti.Calendar.hasCalendarPermissions();
     var _detail;
 
@@ -120,7 +118,7 @@ Check.prototype.calendar = function(){
 		}
 	}
 
-    if(requestPermission){
+    if(this.requestPermission){
         Ti.Calendar.requestCalendarPermissions(function(e) {
 
             if (e.success) {
@@ -138,9 +136,12 @@ Check.prototype.calendar = function(){
 
     _hasCalendarPermissions = Ti.Calendar.hasCalendarPermissions();
     return result(_hasCalendarPermissions, _detail);
-}
+};
 
-Check.prototype.contacts = function(){
+Check.prototype.contacts = function(options){
+
+    setOptions(options);
+
     var _hasContactsPermissions = Ti.Contacts.hasContactsPermissions();
     var _detail;
 
@@ -164,7 +165,7 @@ Check.prototype.contacts = function(){
         }
     }
 
-    if(requestPermission){
+    if(this.requestPermission){
         Ti.Contacts.requestContactsPermissions(function(e) {
 
             if (e.success) {
@@ -184,37 +185,42 @@ Check.prototype.contacts = function(){
     _hasContactsPermissions = Ti.Contacts.hasContactsPermissions();
     return result(_hasContactsPermissions, _detail);
 
-}
+};
 
-Check.prototype.storage = function(){
-
+Check.prototype.storage = function(options){
+    
+    setOptions(options);
+    
     if (!OS_ANDROID) {
         console.error('ti.checkAccess => This is storage method is only available on Android');
+        return;
     }
     
     var _hasStoragePermission = Ti.Filesystem.hasStoragePermissions();
     if (_hasStoragePermission) {
-		 _detail = 'You already have permission';
+		 _detail = 'You already have storage';
         console.log(_detail);
         return result(_hasStoragePermission, _detail);
 	}
 
-    if(requestPermission){
+    if(this.requestPermission){
         Ti.Filesystem.requestStoragePermissions(function(e){
              if (e.success) {
-                _detail = 'You granted location permission.';
+                _detail = 'You granted storage permission.';
             } else {
-                _detail = 'You denied location permission.';
+                _detail = 'You denied storage permission.';
             }
         });
     }
 
     _hasStoragePermission = Ti.Filesystem.hasStoragePermissions();
     return result(_hasStoragePermission, _detail);
-}
+};
 
-Check.prototype.geolocation = function(){
+Check.prototype.geolocation = function(options){
+    // TODO: Check for always and while in use geolocation
     var _hasLocationPermissions = Ti.Geolocation.hasLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS);
+    var _detail;
 
     if (_hasLocationPermissions) {
 		 _detail = 'You already have permission';
@@ -236,31 +242,81 @@ Check.prototype.geolocation = function(){
 		}
 	}
 
-    Ti.Geolocation.requestLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS, function(e) {
-	
-        if (e.success) {
+    if(this.requestPermission){
 
-            _detail = 'You granted location permission.';
+        Ti.Geolocation.requestLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS, function(e) {
+        
+            if (e.success) {
 
-        } else if (OS_ANDROID) {
-            _detail = 'You don\'t have the required uses-permissions in tiapp.xml or you denied location permission for now, forever or the dialog did not show at all because you denied forever before.';
+                _detail = 'You granted location permission.';
 
-        } else {
-            _detail = 'You denied location permission.';
-        }
-	
-	});
+            } else if (OS_ANDROID) {
+                _detail = 'You don\'t have the required uses-permissions in tiapp.xml or you denied location permission for now, forever or the dialog did not show at all because you denied forever before.';
+
+            } else {
+                _detail = 'You denied location permission.';
+            }
+        
+        });
+
+    }
 
     _hasLocationPermissions = Ti.Geolocation.hasLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS);
     return result(_hasLocationPermissions, _detail);
 
+};
+
+Check.prototype.services = function(options){
+    
+    setOptions(options);
+
+    if( options.type && !_.isArray(options.type)){
+        console.error('ti.checkAccess => "type" needs to be an array');
+        return;
+    }
+
+    _.each(options.type, function(index){
+        
+    });
+
+
+};
+
+function setOptions(options){
+    if(!options){
+       console.error('ti.checkAccess => No options were set on setOptions method.');
+       return;
+    }
+
+    this.type = options.type;
+    this.requestPermission = options.requestPermission;
+    this.editPermission = options.editPermission;
 }
 
 function result(value, detail){
     //if (editPermission) goToSettings();
 
-    alert('ti.checkaccess => ' + value + '\n ' + detail);
+    if(this.type.length < 2){
+        alert('ti.checkaccess => ' + value + '\n ' + detail);
+    }
+    
     console.log('ti.checkaccess => ' + value + '\n ' + detail);
+
+    if(this.editPermission && !value){
+
+        var alertSettings = require("settings-dialog");
+
+        alertSettings.prompt({
+            title:"Information", 
+            message:"We can't find a network connection. Please check your settings.",
+            buttonNames:["Settings", "Continue"],
+            settingsType : alertSettings.SETTINGS_TYPE.NETWORK, //The type of prompt 
+            settingsIndex : 0 //What button index should launch the settings
+        }, function(d){
+            console.log("prompt results = " + JSON.stringify(d));
+        });    
+
+    }
 
     return {
         "permission": value,
