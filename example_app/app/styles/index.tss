@@ -1,9 +1,30 @@
+"#close":{
+	right: 10,
+	color: 'blue',
+	backgroundColor: 'transparent',
+	width: Ti.UI.SIZE,
+	top: 10,
+}
+
+"#title":{
+	bottom: 10,
+	font: {
+		fontSize: 24
+	}
+}
+
+"#description":{
+	textAlign: 'center',
+	width: '90%',
+	bottom: 15
+}
+
 ".container": {
-	backgroundColor:"white"
+	backgroundColor: "#fff"
 }
 
 "Button":{
-	width: "300",
+	width: 300,
 	height: 50,
 	backgroundColor: "#111",
 	bottom: 10,
@@ -11,7 +32,7 @@
 }
 
 ".switchContainer":{
-	width: "300",
+	width: 300,
 	height: 50,
 	top:20,
 	bottom: 10,
@@ -23,4 +44,14 @@
 
 ".switch":{
 	left: 40
+}
+
+".checkBtn":{
+	borderRadius: 5,
+	border: 2,
+	height: 50,
+	color: '#fff',
+	font: {
+		fontSize: 20
+	}
 }

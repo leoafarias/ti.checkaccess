@@ -1,27 +1,31 @@
 var check = require('checkAccess').check;
 
-function network(){
-	check.network();
+function checkAll(e){
+	var _types = ['network','camera', 'calendar', 'contacts', 'geolocation'];
+	var _results = check.permissions(_types);
+
+	_.each(_results, function(type){
+		handleReturn(type.permission, type);
+	});
 }
 
-function camera(){
-	check.camera();
+function doCheck(e){
+	var result = check[e.source.id]();
+	handleReturn(e.source.id, result);
 }
 
-function calendar(){
-	check.calendar();
-}
-
-function contacts(){
-	check.contacts();
-}
-
-function storage(){
-	check.storage();
-}
-
-function geolocation(){
-	check.geolocation();
+function handleReturn(elem, result){
+	
+	
+	if(result && result.access){
+		$[elem].applyProperties({
+			backgroundColor: '#006400'
+		});
+	} else {
+		$[elem].applyProperties({
+			backgroundColor: '#8b0000'
+		});
+	}
 }
 
 /**
@@ -34,3 +38,5 @@ function onRequestPermissionSwitch(e){
 }
 
 $.index.open();
+
+checkAll();

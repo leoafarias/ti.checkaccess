@@ -1,13 +1,18 @@
 <Alloy>
 	<Window class="container">
+		<Button id="close" title="close"/>
+
 		<View layout="vertical" top="100">
+
+			<Label id="title" text="Hey Listen!"/>
+			<Label id="description" text="We need some permissions before we can proceed."/>
 			
-			<Button id="network" onClick="network">Network</Button>
-			<Button id="camera" onClick="camera">Camera</Button>
-			<Button id="calendar" onClick="calendar">Calendar</Button>
-			<Button id="contacts" onClick="contacts">Contacts</Button>
-			<Button id="storage" onClick="storage">Storage</Button>
-			<Button id="geolocation" onClick="geolocation">Geolocation</Button>
+			<Button id="network" class="checkBtn" onClick="doCheck">Network</Button>
+			<Button id="camera" class="checkBtn" onClick="doCheck">Camera</Button>
+			<Button id="calendar" class="checkBtn" onClick="doCheck">Calendar</Button>
+			<Button id="contacts" class="checkBtn" onClick="doCheck">Contacts</Button>
+			<Button platform="android" id="storage" class="checkBtn" onClick="doCheck">Storage</Button>
+			<Button id="geolocation" class="checkBtn" onClick="doCheck">Geolocation</Button>
 
 			<View class="switchContainer" layout="horizontal">
 				<Label class="switchLabel" text="Request Permission"/>
