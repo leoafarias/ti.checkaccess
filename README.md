@@ -3,16 +3,20 @@ Small utility to check iOS and Android API permissions, and access.
 
 [![bitHound Code](https://www.bithound.io/github/leoafarias/ti.checkaccess/badges/code.svg)](https://www.bithound.io/github/leoafarias/ti.checkaccess)
 
+### Support:
+Ti.SDK 5.2.0+
+There have been a lot of API changes after 5.2.0
+
 ## Specs
 Ability to check the following permissions on OS
-- X Network
+- Network
 - Notification
 - X Camera
 - Microphone
 - Photo Gallery
 - Location
-- X Contacts
-- X Calendar
+- Contacts
+- Calendar
 - Storage
 
 ### Network

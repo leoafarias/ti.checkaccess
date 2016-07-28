@@ -17,6 +17,10 @@
         <enable-launch-screen-storyboard>true</enable-launch-screen-storyboard>
         <plist>
             <dict>
+            	<key>NSLocationWhenInUseUsageDescription</key>
+				<string>Test NSLocationWhenInUseUsageDescription</string>
+				<key>NSLocationAlwaysUsageDescription</key>
+				<string>Test NSLocationAlwaysUsageDescription</string>
                 <key>UISupportedInterfaceOrientations~iphone</key>
                 <array>
                     <string>UIInterfaceOrientationPortrait</string>
