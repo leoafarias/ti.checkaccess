@@ -1,14 +1,18 @@
 var _isAndroid = Ti.Platform.osname === 'android';
 
 var DIALOG_TYPE = {
-	NETWORK : 0,
-	LOCATION_SERVICES :1
+	network : 0,
+	camera :1,
+	calendar: 2,
+	contacts: 3,
+	storage: 4,
+	geolocation: 5
 };
 
 exports.SETTINGS_TYPE = DIALOG_TYPE;
 
 var getActionByType = function(settingsType){
-	if(settingsType ===DIALOG_TYPE.NETWORK){
+	if(settingsType === DIALOG_TYPE.network){
 		return "android.settings.WIRELESS_SETTINGS";
 	}else{
 		return "android.settings.LOCATION_SOURCE_SETTINGS";
