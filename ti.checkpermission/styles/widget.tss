@@ -1,0 +1,83 @@
+"#permissionView":{
+	modal: true,
+	fullscreen:false,
+	backgroundColor: 'rgba(0, 0, 0, 0.5)'
+}
+
+"#permissionContainer":{
+	top:50,
+	bottom: 50,
+	right: 30,
+	left: 30,
+	borderRadius: 5,
+	backgroundColor: '#fff'
+}
+
+"#close":{
+	right: 10,
+	color: 'blue',
+	backgroundColor: 'transparent',
+	width: Ti.UI.SIZE,
+	top: 10,
+}
+
+"#title":{
+	bottom: 10,
+	font: {
+		fontSize: 24
+	}
+}
+
+"#description":{
+	textAlign: 'center',
+	width: '80%',
+	bottom: 15
+}
+
+".container": {
+	backgroundColor: "#fff"
+}
+
+"Button":{
+	width: '80%',
+	height: 50,
+	backgroundColor: "#111",
+	bottom: 10,
+	color: "#fff"
+}
+
+".switchContainer":{
+	width: 300,
+	height: 50,
+	top:20,
+	bottom: 10,
+}
+
+".switchLabel":{
+	left: 10
+}
+
+".switch":{
+	left: 40
+}
+
+".checkBtn":{
+	borderRadius: 5,
+	layout:'horizontal',
+	border: 2,
+	height: 50,
+	color: '#fff',
+	font: {
+		fontSize: 20
+	}
+}
+
+".icon":{
+	top:15,
+	left:20,
+	color: '#fff',
+	font:{
+		fontFamily: 'icomoon',
+		fontSize: 18
+	}
+}

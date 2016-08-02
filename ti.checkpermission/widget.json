@@ -1,0 +1,13 @@
+{
+	"id": "ti.checkpermission",
+	"name": "ti.checkpermission",
+	"description" : "Widget to display access an app has to a device in a friendly way. ",
+	"author": "Leo Farias",
+	"version": "1.0",
+	"copyright":"Copyright (c) 2016",
+	"license":"Apache 2.0",
+	"min-alloy-version": "1.0",
+	"min-titanium-version":"2.1",
+	"tags":"permission, access",
+	"platforms":"android,ios"
+}

@@ -1,0 +1,36 @@
+<Alloy>
+	<Window id="permissionView" class="container">
+		<View id="permissionContainer">
+			<Button id="close" title="close"/>
+			<View layout="vertical" top="60">
+
+				<Label id="title" text="Hey Listen!"/>
+				<Label id="description" text="We need some permissions before we can proceed."/>
+				<Button id="network" class="checkBtn" onClick="doCheck">
+					<Label class="icon" text="\ue91b"/>
+					Network
+				</Button>
+				<Button id="camera" class="checkBtn" onClick="doCheck">
+					<Label class="icon" text="\ue90f"/>
+					Camera</Button>
+				<Button id="calendar" class="checkBtn" onClick="doCheck">
+					<Label class="icon" text="\ue953"/>
+					Calendar</Button>
+				<Button id="contacts" class="checkBtn" onClick="doCheck">
+					<Label class="icon" text="\ue944"/>
+					Contacts</Button>
+				<Button platform="android" id="storage" class="checkBtn" onClick="doCheck">
+					<Label class="icon" text="\ue960"/>
+					Storage</Button>
+				<Button id="geolocation" class="checkBtn" onClick="doCheck">
+					<Label class="icon" text="\ue949"/>
+					Geolocation</Button>
+				<View class="switchContainer" layout="horizontal">
+					<Label class="switchLabel" text="Request Permission"/>
+					<Switch class="switch" id="requestPermission" value="false" onChange="onRequestPermissionSwitch"/>
+				</View>
+
+			</View>
+		</View>
+	</Window>
+</Alloy>
