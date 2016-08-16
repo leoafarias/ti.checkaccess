@@ -1,4 +1,4 @@
-# ti.checkaccess
+# Work in Progress: ti.checkaccess
 Small utility to check iOS and Android API permissions, and access.
 
 [![bitHound Code](https://www.bithound.io/github/leoafarias/ti.checkaccess/badges/code.svg)](https://www.bithound.io/github/leoafarias/ti.checkaccess)
