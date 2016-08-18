@@ -1,52 +1,46 @@
-var editPermission = false;
-var requestPermission = false;
 
 function Check(options){
 
+    this.requestPermission = true;
+    this.checkingAll = false;
     this.setOptions(options);
     
 }
 
-/**
- * Check permissions
- *
- * @param {array} types - Array with all the permissions would like to check.
- * @return {object} - With all the permissions
-*/
-
-Check.prototype.permissions = function(types, callback ){
+Check.prototype.permissions = function permissions (types) {
     
     var _this = this;
+    var _result = {};
 
-    if( types && !_.isArray(types)){
+    this.checkingAll = true;
+    
+    if ( types && !_.isArray(types)) {
+
         console.error('ti.checkAccess => Options "type" is not a valid array');
         return;
+        
     }   
-	
-	// Sets options for bulk calls
-	var _options = {
-		requestPermission: false,
-		editPermission: false
-	};
-
-    _this.setOptions(_options);
-
-    var _result = {};
     
-    _.each(types, function(type){
+    _.each(types, function (type) {
+
          if(_.isFunction(_this[type])){
+
             _result[type] = _this[type]();
+
          } else {
+
              console.error('ti.checkAccess => Invalid value passed in the array options');
+             
          }
     });
+    
+    this.checkingAll = false;
 
-    if(callback) callback(_result);
     return _result;
 
 };
 
-Check.prototype.network = function(callback){
+Check.prototype.network = function network () {
 	
 	var _callee = 'network';
     var _hasAccess = Ti.Network.online;
@@ -54,42 +48,52 @@ Check.prototype.network = function(callback){
     var _reason;
 
     if (_networkType === Ti.Network.NETWORK_MOBILE) {
+
         _reason = 'Device is communicating over a mobile network';
         
     } else if( _networkType === Ti.Network.NETWORK_WIFI ){
+
         _reason = 'Device is communicating over a wifi network';
         
     } else if( _networkType === Ti.Network.NETWORK_NONE ){
+
         _reason = 'No network is available';
         
     }
     
-    return result(_callee, _hasAccess, _reason, callback);
+    return this.result (_callee, _hasAccess, _reason);
 };
 
-Check.prototype.camera = function(callback){
+Check.prototype.camera = function camera () {
 	
 	var _callee = 'camera';
     var _hasAccess = Ti.Media.hasCameraPermissions();
     var _reason;
 
     if (_hasAccess) {
+
         _reason = 'You already have permission';
-        return result(_callee, _hasAccess, _reason, callback);
+        return this.result ( _callee, _hasAccess, _reason );
+
     }
 
     if (OS_IOS) {
+
         var cameraAuthorizationStatus = Ti.Media.cameraAuthorization;
 
         if (cameraAuthorizationStatus === Ti.Media.CAMERA_AUTHORIZATION_RESTRICTED) {
+
 			_reason = 'Permission are restricted by some policy. Requesting again might cause issues.';
+
 		} else if (cameraAuthorizationStatus === Ti.Media.CAMERA_AUTHORIZATION_DENIED) {
+
             _reason = 'Permission has been denied before.';
+             
         }
     }
 
     //if we dont have to request permission
-    if(this.requestPermission){
+    if ( ! this.checkingAll && this.requestPermission ) {
         //Before you request permission on android make sure you have this set on tiapp.xml
         // <android xmlns:android="http://schemas.android.com/apk/res/android">
         //     <manifest>
@@ -98,19 +102,26 @@ Check.prototype.camera = function(callback){
         // </android>
 
         Ti.Media.requestCameraPermissions(function(e){
+
             if(e.success){
+
                 _reason = 'You granted permission';
+
             }  else {
+
                 _reason = 'You denied permission';
+
             }
+
         });
+
     }
 
     _hasAccess = Ti.Media.hasCameraPermissions();
-    return result(_callee, _hasAccess, _reason, callback);
+    return this.result ( _callee, _hasAccess, _reason );
 };
 
-Check.prototype.calendar = function(callback){
+Check.prototype.calendar = function calendar () {
 	
 	var _callee = 'calendar';
     var _hasAccess = Ti.Calendar.hasCalendarPermissions();
@@ -118,7 +129,7 @@ Check.prototype.calendar = function(callback){
 
     if (_hasAccess) {
         _reason = 'You already have permission';
-        return result(_callee, _hasAccess, _reason, callback);
+        return this.result( _callee, _hasAccess, _reason );
     }
 
     if (OS_IOS) {
@@ -133,7 +144,8 @@ Check.prototype.calendar = function(callback){
 		}
 	}
 
-    if(this.requestPermission){
+    if ( ! this.checkingAll && this.requestPermission ) {
+
         Ti.Calendar.requestCalendarPermissions(function(e) {
 
             if (e.success) {
@@ -149,18 +161,20 @@ Check.prototype.calendar = function(callback){
     }
 
     _hasAccess = Ti.Calendar.hasCalendarPermissions();
-    return result(_callee, _hasAccess, _reason, callback);
+    return this.result ( _callee, _hasAccess, _reason );
 };
 
-Check.prototype.contacts = function(callback){
+Check.prototype.contacts = function contacts () {
 	
 	var _callee = 'contacts';
     var _hasAccess = Ti.Contacts.hasContactsPermissions();
     var _reason;
 
     if (_hasAccess) {
+
         _reason = 'You already have permission';
-        return result(_callee, _hasAccess, _reason, callback);
+        return this.result ( _callee, _hasAccess, _reason );
+
     }
 
     if (OS_IOS) {
@@ -168,87 +182,111 @@ Check.prototype.contacts = function(callback){
         var _contactsAuthorization = Ti.Contacts.contactsAuthorization;
 
         if (_contactsAuthorization === Ti.Contacts.AUTHORIZATION_RESTRICTED) {
+            
             _reason = 'Permission are restricted by some policy. Requesting again might cause issues.'; 
 
         } else if (_contactsAuthorization === Ti.Contacts.AUTHORIZATION_DENIED) {
+
             _reason = 'Permission has been denied before.';
+            
         }
     }
 
-    if(this.requestPermission){
+    if ( ! this.checkingAll && this.requestPermission ) {
+
         Ti.Contacts.requestContactsPermissions(function(e) {
 
             if (e.success) {
+
                 _reason = 'You granted contacts permission.';
 
             } else if (OS_ANDROID) {
+
                 _reason = 'You don\'t have the required uses-permissions in tiapp.xml or you denied contacts permission for now, forever or the dialog did not show at all because you denied forever before.';
 
             } else {
+                
                 _reason = 'You denied contact permission.';
+
             }
 
         });
     }
 
     _hasAccess = Ti.Contacts.hasContactsPermissions();
-    return result(_callee, _hasAccess, _reason, callback);
+    return this.result ( _callee, _hasAccess, _reason );
 
 };
 
-Check.prototype.storage = function(callback){
+Check.prototype.storage = function storage () {
     
     if (!OS_ANDROID) {
+
         console.error('ti.checkAccess => This is storage method is only available on Android');
         return;
+
     }
     
     var _callee = 'storage';
     var _hasAccess = Ti.Filesystem.hasStoragePermissions();
+
     if (_hasAccess) {
+
 		 _reason = 'You already have storage';
-        return result(_callee, _hasAccess, _reason, callback);
+        return this.result ( _callee, _hasAccess, _reason );
+
 	}
 
-    if(this.requestPermission){
+    if ( ! this.checkingAll && this.requestPermission ) {
+
         Ti.Filesystem.requestStoragePermissions(function(e){
+             
              if (e.success) {
                 _reason = 'You granted storage permission.';
+
             } else {
+                
                 _reason = 'You denied storage permission.';
+
             }
+
         });
     }
 
     _hasAccess = Ti.Filesystem.hasStoragePermissions();
-    return result(_callee, _hasAccess, _reason, callback);
+    return this.result ( _callee, _hasAccess, _reason );
+
 };
 
-Check.prototype.geolocation = function(callback){
-	console.log('geolocation fired');
+Check.prototype.geolocation = function geolocation () {
+	
     // TODO: Check for always and while in use geolocation
     var _callee = 'geolocation';
     var _hasAccess = Ti.Geolocation.hasLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS);
     var _reason;
 
     if (_hasAccess) {
+
 		 _reason = 'You already have permission';
-        return result(_callee, _hasAccess, _reason, callback);
+        return this.result ( _callee, _hasAccess, _reason );
 	}
 
     if (OS_IOS) {
 
 		var _locationServicesAuthorization = Ti.Geolocation.locationServicesAuthorization;
 
-
 		if (_locationServicesAuthorization === Ti.Geolocation.AUTHORIZATION_RESTRICTED) {
+
 			_reason = 'Permission are restricted by some policy. Requesting again might cause issues.';
+
 		} else if (_locationServicesAuthorization === Ti.Geolocation.AUTHORIZATION_DENIED) {
+
             _reason = 'Permission has been denied before.';
+            
 		}
 	}
 
-    if(this.requestPermission){
+    if ( ! this.checkingAll && this.requestPermission ) {
 
         Ti.Geolocation.requestLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS, function(e) {
         
@@ -257,10 +295,13 @@ Check.prototype.geolocation = function(callback){
                 _reason = 'You granted location permission.';
 
             } else if (OS_ANDROID) {
+
                 _reason = 'You don\'t have the required uses-permissions in tiapp.xml or you denied location permission for now, forever or the dialog did not show at all because you denied forever before.';
 
             } else {
+
                 _reason = 'You denied location permission.';
+
             }
         
         }); 
@@ -268,89 +309,96 @@ Check.prototype.geolocation = function(callback){
     }
 
     _hasAccess = Ti.Geolocation.hasLocationPermissions(Ti.Geolocation.AUTHORIZATION_ALWAYS);
-    return result(_callee, _hasAccess, _reason, callback);
+    return this.result ( _callee, _hasAccess, _reason );
 
 };
 
-Check.prototype.setOptions = function(options){
-    if(!options){
-       console.log('ti.checkAccess => No options were set on setOptions method.');
-       return;
+Check.prototype.setOptions = function setOptions (options) {
+    
+    if ( options ) {
+
+        this.requestPermission = options.requestPermission;
+
     }
-    
-    _.defaults(options, {
-        requestPermission: true,
-        editPermission: false
-    });
-    
-    this.requestPermission = options.requestPermission;
-    this.editPermission = options.editPermission;
-
-    editPermission = this.editPermission;
-    requestPermission = this.requestPermission;
 	
 };
 
-Check.prototype.getOptions = function(){
-	return {
-		requestPermission: this.requestPermission,
-		editPermission: this.editPermission
-	};
+Check.prototype.getOptions = function getOptions () {
+
+	return this.requestPermission;
+
 };
 
-function result(type, value, reason, callback){
+Check.prototype.result = function result (type, access, reason) {
 	
-    if(!editPermission && !value){
+    var _this = this;
+    var _alert = null
+
+    if ( ! _this.checkingAll && ! access ){
     	
-    	var _alert;
     	
     	if(type === 'network'){
+
 	    	_alert = Ti.UI.createAlertDialog({
+
 	    		title:"Information", 
 	            message:"We can't find a network connection. Please check your connection and try again",
 	            buttonNames:["OK"],
 	            cancel: 0
+
 	    	});
+
     	} else {
+
     		_alert = Ti.UI.createAlertDialog({
+
 	    		title:"Information", 
 	            message:"Please enable access to this permission to continue.",
 	            buttonNames:["Settings", "Continue"],
 	            cancel: 0
+
 	    	});
+
     	}
     	
     	_alert.addEventListener('click', function(e){
+
     		if (e.index === e.source.cancel){
-    			goToSettings();
+
+    			_this.goToSettings();
+
     		}
+
     	});
     	
     	_alert.show();
-
 
     }
     
     var _result = {
         "permission": type,
-        "access": value,
+        "access": access,
         "reason": reason
     };
     
-    if(callback) callback(_result);
 	console.error(_result);
     return _result;
 }
 
-function goToSettings(e){
+Check.prototype.goToSettings = function goToSettings (e) {
+
     if (OS_IOS) {
+
 		Ti.Platform.openURL(Ti.App.iOS.applicationOpenSettingsURL);
+
 	}
 
 	if (OS_ANDROID) {
+
 		var intent = Ti.Android.createIntent({
 			action: 'android.settings.APPLICATION_SETTINGS'
 		});
+        
 		intent.addFlags(Ti.Android.FLAG_ACTIVITY_NEW_TASK);
 		Ti.Android.currentActivity.startActivity(intent);
 	}

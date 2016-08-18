@@ -1,34 +1,31 @@
 <Alloy>
 	<Window id="permissionView" class="container">
 		<View id="permissionContainer">
-			<Button id="close" title="close"/>
+	
 			<View layout="vertical" top="60">
 
 				<Label id="title" text="Hey Listen!"/>
 				<Label id="description" text="We need some permissions before we can proceed."/>
 				<Button id="network" class="checkBtn" onClick="doCheck">
-					<Label class="icon" text="\ue91b"/>
-					Network
+					<Label id="network_label" class="icon" text="\ue91b"/>
+					Check Network
 				</Button>
 				<Button id="camera" class="checkBtn" onClick="doCheck">
-					<Label class="icon" text="\ue90f"/>
-					Camera</Button>
+					<Label id="camera_label" class="icon" text="\ue90f"/>
+					Enable Camera</Button>
 				<Button id="calendar" class="checkBtn" onClick="doCheck">
-					<Label class="icon" text="\ue953"/>
-					Calendar</Button>
+					<Label id="calendar_label" class="icon" text="\ue953"/>
+					Allow Calendar</Button>
 				<Button id="contacts" class="checkBtn" onClick="doCheck">
-					<Label class="icon" text="\ue944"/>
-					Contacts</Button>
+					<Label id="contacts_label" class="icon" text="\ue944"/>
+					Allow Contacts</Button>
 				<Button platform="android" id="storage" class="checkBtn" onClick="doCheck">
-					<Label class="icon" text="\ue960"/>
-					Storage</Button>
+					<Label id="storage_label" class="icon" text="\ue960"/>
+					Enable Storage</Button>
 				<Button id="geolocation" class="checkBtn" onClick="doCheck">
-					<Label class="icon" text="\ue949"/>
-					Geolocation</Button>
-				<View class="switchContainer" layout="horizontal">
-					<Label class="switchLabel" text="Request Permission"/>
-					<Switch class="switch" id="requestPermission" value="false" onChange="onRequestPermissionSwitch"/>
-				</View>
+					<Label id="geolocation_label" class="icon" text="\ue949"/>
+					Enable Location</Button>
+				<Button  id="dismissBtn" title="Let's Go"/>
 
 			</View>
 		</View>

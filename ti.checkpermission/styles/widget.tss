@@ -13,71 +13,53 @@
 	backgroundColor: '#fff'
 }
 
-"#close":{
-	right: 10,
-	color: 'blue',
-	backgroundColor: 'transparent',
-	width: Ti.UI.SIZE,
-	top: 10,
-}
-
 "#title":{
 	bottom: 10,
+	color: '#222',
 	font: {
-		fontSize: 24
+		fontSize: 24,
+		fontWeight: 'bold'
 	}
 }
 
 "#description":{
 	textAlign: 'center',
 	width: '80%',
-	bottom: 15
+	color: '#555',
+	bottom: 15,
+	font: {
+		fontSize: 14
+	}
 }
 
 ".container": {
 	backgroundColor: "#fff"
 }
 
-"Button":{
-	width: '80%',
-	height: 50,
-	backgroundColor: "#111",
-	bottom: 10,
-	color: "#fff"
-}
-
-".switchContainer":{
-	width: 300,
-	height: 50,
-	top:20,
-	bottom: 10,
-}
-
-".switchLabel":{
-	left: 10
-}
-
-".switch":{
-	left: 40
-}
-
 ".checkBtn":{
-	borderRadius: 5,
+	borderRadius: 25,
+	borderColor: '#3ca5c5',
+	borderWidth: 2,
+	width: '80%',
 	layout:'horizontal',
+	backgroundColor: '#fff',
 	border: 2,
+	bottom: 15,
 	height: 50,
-	color: '#fff',
+	color: '#3ca5c5',
 	font: {
-		fontSize: 20
+		fontSize: 18
 	}
 }
 
 ".icon":{
 	top:15,
 	left:20,
-	color: '#fff',
+	color: '#3ca5c5',
 	font:{
 		fontFamily: 'icomoon',
 		fontSize: 18
 	}
 }
+
+"#dismissBtn":{}
